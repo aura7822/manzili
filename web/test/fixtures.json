@@ -1,0 +1,898 @@
+{
+ "properties": [
+  {
+   "id": "bc684c28-915a-4c0c-b921-6c3be80d5dc3",
+   "owner_id": "2fd531a2-be29-408d-b236-9c722a874a3d",
+   "name": "Jade Court",
+   "slug": "jade-court",
+   "address": "Moi Avenue",
+   "city": "Nairobi",
+   "total_floors": null,
+   "created_at": "2026-11-04T13:05:59.023Z",
+   "updated_at": "2026-11-04T13:05:59.023Z",
+   "unit_count": 1
+  },
+  {
+   "id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "owner_id": "2fd531a2-be29-408d-b236-9c722a874a3d",
+   "name": "Sunrise Apartments",
+   "slug": "sunrise-apartments",
+   "address": "Kenyatta Road",
+   "city": "Thika",
+   "total_floors": 3,
+   "created_at": "2026-11-04T13:05:58.989Z",
+   "updated_at": "2026-11-04T13:05:58.989Z",
+   "unit_count": 5
+  }
+ ],
+ "pricing": [
+  {
+   "id": 3,
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "unit_type": "2_bedroom",
+   "floor_number": null,
+   "monthly_rent": "20000.00"
+  },
+  {
+   "id": 4,
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "unit_type": "2_bedroom",
+   "floor_number": 3,
+   "monthly_rent": "25000.00"
+  },
+  {
+   "id": 1,
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "unit_type": "bedsitter",
+   "floor_number": null,
+   "monthly_rent": "8000.00"
+  },
+  {
+   "id": 2,
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "unit_type": "single",
+   "floor_number": null,
+   "monthly_rent": "6500.00"
+  },
+  {
+   "id": 5,
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "unit_type": "studio",
+   "floor_number": null,
+   "monthly_rent": "9500.00"
+  }
+ ],
+ "units": [
+  {
+   "id": "878c4fbd-5785-4f34-905d-e91010b7c1b0",
+   "unit_number": "J1",
+   "floor_number": 0,
+   "unit_type": "1_bedroom",
+   "monthly_rent": "15000.00",
+   "status": "vacant",
+   "property_id": "bc684c28-915a-4c0c-b921-6c3be80d5dc3",
+   "property_name": "Jade Court",
+   "lease_id": null,
+   "lease_start": null,
+   "deposit_amount": null,
+   "deposit_status": null,
+   "tenant_id": null,
+   "tenant_name": null,
+   "tenant_phone": null,
+   "national_id": null,
+   "tenure_years": null,
+   "tenure_months": null
+  },
+  {
+   "id": "8c9e2405-db8a-49d4-bdd6-402a902e6687",
+   "unit_number": "A1",
+   "floor_number": 1,
+   "unit_type": "single",
+   "monthly_rent": "6500.00",
+   "status": "occupied",
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "property_name": "Sunrise Apartments",
+   "lease_id": "c05f0e0e-6df6-4d60-9b5d-8f4c5888ef7a",
+   "lease_start": "2026-11-04",
+   "deposit_amount": "6500.00",
+   "deposit_status": "held",
+   "tenant_id": "c77cf093-4b16-4efb-bb64-f7ea6c4432bb",
+   "tenant_name": "Jane Mwangi",
+   "tenant_phone": "254712000001",
+   "national_id": "30000001",
+   "tenure_years": 0,
+   "tenure_months": 0
+  },
+  {
+   "id": "9f49be4d-9127-4902-b8c1-33c15aec6ea5",
+   "unit_number": "A2",
+   "floor_number": 1,
+   "unit_type": "bedsitter",
+   "monthly_rent": "8000.00",
+   "status": "occupied",
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "property_name": "Sunrise Apartments",
+   "lease_id": "78f779c4-b230-4010-9d42-421bd089d817",
+   "lease_start": "2026-11-04",
+   "deposit_amount": "8000.00",
+   "deposit_status": "pending",
+   "tenant_id": "ff15c666-358e-409e-a362-c76822c13429",
+   "tenant_name": "Peter Otieno",
+   "tenant_phone": "254112000002",
+   "national_id": "30000002",
+   "tenure_years": 0,
+   "tenure_months": 0
+  },
+  {
+   "id": "e500e5a3-50de-42ca-9dea-8762fdd3f562",
+   "unit_number": "B1",
+   "floor_number": 2,
+   "unit_type": "2_bedroom",
+   "monthly_rent": "20000.00",
+   "status": "occupied",
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "property_name": "Sunrise Apartments",
+   "lease_id": "a9eb1573-729b-47f2-9406-6f456ff64a73",
+   "lease_start": "2026-11-04",
+   "deposit_amount": "20000.00",
+   "deposit_status": "held",
+   "tenant_id": "cbc28995-7b7a-4836-b103-6516fdeb93bc",
+   "tenant_name": "Grace Wanjiru",
+   "tenant_phone": "447700900123",
+   "national_id": "30000003",
+   "tenure_years": 0,
+   "tenure_months": 0
+  },
+  {
+   "id": "62bd8605-1b92-4bd0-8fe7-68ac59ca5177",
+   "unit_number": "B3",
+   "floor_number": 2,
+   "unit_type": "studio",
+   "monthly_rent": "9500.00",
+   "status": "vacant",
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "property_name": "Sunrise Apartments",
+   "lease_id": null,
+   "lease_start": null,
+   "deposit_amount": null,
+   "deposit_status": null,
+   "tenant_id": null,
+   "tenant_name": null,
+   "tenant_phone": null,
+   "national_id": null,
+   "tenure_years": null,
+   "tenure_months": null
+  },
+  {
+   "id": "761393ba-64cf-4360-8f68-26e1d5cfff6e",
+   "unit_number": "B2",
+   "floor_number": 3,
+   "unit_type": "2_bedroom",
+   "monthly_rent": "25000.00",
+   "status": "vacant",
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "property_name": "Sunrise Apartments",
+   "lease_id": null,
+   "lease_start": null,
+   "deposit_amount": null,
+   "deposit_status": null,
+   "tenant_id": null,
+   "tenant_name": null,
+   "tenant_phone": null,
+   "national_id": null,
+   "tenure_years": null,
+   "tenure_months": null
+  }
+ ],
+ "tenants": [
+  {
+   "id": "cbc28995-7b7a-4836-b103-6516fdeb93bc",
+   "full_name": "Grace Wanjiru",
+   "phone": "447700900123",
+   "email": "grace@example.com",
+   "national_id": "30000003",
+   "preferred_channel": "email",
+   "created_at": "2026-11-04T13:05:59.748Z",
+   "lease_id": "a9eb1573-729b-47f2-9406-6f456ff64a73",
+   "start_date": "2026-11-04",
+   "rent_amount": "20000.00",
+   "deposit_amount": "20000.00",
+   "deposit_status": "held",
+   "unit_id": "e500e5a3-50de-42ca-9dea-8762fdd3f562",
+   "unit_number": "B1",
+   "unit_type": "2_bedroom",
+   "floor_number": 2,
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "property_name": "Sunrise Apartments",
+   "invoice_id": "aaaa4269-61db-4c18-8a1e-fb5f57694706",
+   "due_date": "2026-11-05",
+   "balance": "0.00",
+   "rent_status": "paid"
+  },
+  {
+   "id": "ff15c666-358e-409e-a362-c76822c13429",
+   "full_name": "Peter Otieno",
+   "phone": "254112000002",
+   "email": null,
+   "national_id": "30000002",
+   "preferred_channel": "sms",
+   "created_at": "2026-11-04T13:05:59.737Z",
+   "lease_id": "78f779c4-b230-4010-9d42-421bd089d817",
+   "start_date": "2026-11-04",
+   "rent_amount": "8000.00",
+   "deposit_amount": "8000.00",
+   "deposit_status": "pending",
+   "unit_id": "9f49be4d-9127-4902-b8c1-33c15aec6ea5",
+   "unit_number": "A2",
+   "unit_type": "bedsitter",
+   "floor_number": 1,
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "property_name": "Sunrise Apartments",
+   "invoice_id": "1d32d5ea-bb8c-40b3-bd53-88a1d77d0510",
+   "due_date": "2026-10-31",
+   "balance": "8000.00",
+   "rent_status": "overdue"
+  },
+  {
+   "id": "c77cf093-4b16-4efb-bb64-f7ea6c4432bb",
+   "full_name": "Jane Mwangi",
+   "phone": "254712000001",
+   "email": null,
+   "national_id": "30000001",
+   "preferred_channel": "sms",
+   "created_at": "2026-11-04T13:05:59.573Z",
+   "lease_id": "c05f0e0e-6df6-4d60-9b5d-8f4c5888ef7a",
+   "start_date": "2026-11-04",
+   "rent_amount": "6500.00",
+   "deposit_amount": "6500.00",
+   "deposit_status": "held",
+   "unit_id": "8c9e2405-db8a-49d4-bdd6-402a902e6687",
+   "unit_number": "A1",
+   "unit_type": "single",
+   "floor_number": 1,
+   "property_id": "31936338-5abc-445b-b7ba-eda3272251da",
+   "property_name": "Sunrise Apartments",
+   "invoice_id": "aea5654e-14b6-4cd2-8e51-b1945bc0e9c4",
+   "due_date": "2026-11-05",
+   "balance": "3500.00",
+   "rent_status": "partial"
+  }
+ ],
+ "summary": {
+  "date": "2026-11-04",
+  "is_today": true,
+  "earliest": "2026-10-21",
+  "today": "2026-11-04",
+  "month": "2026-11",
+  "collected": "23000.00",
+  "maintenance_spent": "1200.00",
+  "net_income": "21800.00",
+  "pending": "3500.00",
+  "overdue": "8000.00",
+  "billed": "34500.00",
+  "paid_count": 1,
+  "invoice_count": 3,
+  "total_units": 6,
+  "occupied_units": 3,
+  "vacant_units": 3,
+  "occupancy_pct": 50,
+  "by_type": [
+   {
+    "unit_type": "1_bedroom",
+    "total": 1,
+    "occupied": 0,
+    "min_rent": "15000.00",
+    "max_rent": "15000.00",
+    "vacant": 1
+   },
+   {
+    "unit_type": "2_bedroom",
+    "total": 2,
+    "occupied": 1,
+    "min_rent": "20000.00",
+    "max_rent": "25000.00",
+    "vacant": 1
+   },
+   {
+    "unit_type": "bedsitter",
+    "total": 1,
+    "occupied": 1,
+    "min_rent": "8000.00",
+    "max_rent": "8000.00",
+    "vacant": 0
+   },
+   {
+    "unit_type": "single",
+    "total": 1,
+    "occupied": 1,
+    "min_rent": "6500.00",
+    "max_rent": "6500.00",
+    "vacant": 0
+   },
+   {
+    "unit_type": "studio",
+    "total": 1,
+    "occupied": 0,
+    "min_rent": "9500.00",
+    "max_rent": "9500.00",
+    "vacant": 1
+   }
+  ],
+  "revenue_trend": [
+   {
+    "month": "2026-06",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-07",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-08",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-09",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-10",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-11",
+    "collected": "23000.00",
+    "spent": "1200.00",
+    "net": "21800.00"
+   }
+  ],
+  "arrears_ageing": {
+   "d0_7": "8000.00",
+   "d8_30": "0",
+   "d30_plus": "0"
+  },
+  "deposits": {
+   "held": "26500.00",
+   "pending": "8000.00",
+   "held_count": 2,
+   "pending_count": 1
+  },
+  "maintenance_properties": [
+   {
+    "id": "bc684c28-915a-4c0c-b921-6c3be80d5dc3",
+    "name": "Jade Court",
+    "amount": "0",
+    "note": null
+   },
+   {
+    "id": "31936338-5abc-445b-b7ba-eda3272251da",
+    "name": "Sunrise Apartments",
+    "amount": "1200.00",
+    "note": "Plumber"
+   }
+  ]
+ },
+ "summarySun": {
+  "date": "2026-11-04",
+  "is_today": true,
+  "earliest": "2026-10-21",
+  "today": "2026-11-04",
+  "month": "2026-11",
+  "collected": "23000.00",
+  "maintenance_spent": "1200.00",
+  "net_income": "21800.00",
+  "pending": "3500.00",
+  "overdue": "8000.00",
+  "billed": "34500.00",
+  "paid_count": 1,
+  "invoice_count": 3,
+  "total_units": 5,
+  "occupied_units": 3,
+  "vacant_units": 2,
+  "occupancy_pct": 60,
+  "by_type": [
+   {
+    "unit_type": "2_bedroom",
+    "total": 2,
+    "occupied": 1,
+    "min_rent": "20000.00",
+    "max_rent": "25000.00",
+    "vacant": 1
+   },
+   {
+    "unit_type": "bedsitter",
+    "total": 1,
+    "occupied": 1,
+    "min_rent": "8000.00",
+    "max_rent": "8000.00",
+    "vacant": 0
+   },
+   {
+    "unit_type": "single",
+    "total": 1,
+    "occupied": 1,
+    "min_rent": "6500.00",
+    "max_rent": "6500.00",
+    "vacant": 0
+   },
+   {
+    "unit_type": "studio",
+    "total": 1,
+    "occupied": 0,
+    "min_rent": "9500.00",
+    "max_rent": "9500.00",
+    "vacant": 1
+   }
+  ],
+  "revenue_trend": [
+   {
+    "month": "2026-06",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-07",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-08",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-09",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-10",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-11",
+    "collected": "23000.00",
+    "spent": "1200.00",
+    "net": "21800.00"
+   }
+  ],
+  "arrears_ageing": {
+   "d0_7": "8000.00",
+   "d8_30": "0",
+   "d30_plus": "0"
+  },
+  "deposits": {
+   "held": "26500.00",
+   "pending": "8000.00",
+   "held_count": 2,
+   "pending_count": 1
+  },
+  "maintenance_properties": [
+   {
+    "id": "31936338-5abc-445b-b7ba-eda3272251da",
+    "name": "Sunrise Apartments",
+    "amount": "1200.00",
+    "note": "Plumber"
+   }
+  ]
+ },
+ "live": [
+  {
+   "id": 2,
+   "amount": "20000.00",
+   "method": "bank_transfer",
+   "paid_at": "2026-11-04T13:05:59.809Z",
+   "unit_number": "B1",
+   "tenant_name": "Grace Wanjiru",
+   "property_name": "Sunrise Apartments",
+   "balance": "0.00",
+   "period": "Nov 2026",
+   "fully_paid": true
+  },
+  {
+   "id": 1,
+   "amount": "3000.00",
+   "method": "cash",
+   "paid_at": "2026-11-04T13:05:59.770Z",
+   "unit_number": "A1",
+   "tenant_name": "Jane Mwangi",
+   "property_name": "Sunrise Apartments",
+   "balance": "3500.00",
+   "period": "Nov 2026",
+   "fully_paid": false
+  }
+ ],
+ "archives": [
+  {
+   "id": 1,
+   "property_name": "Sunrise Apartments",
+   "unit_number": "B3",
+   "unit_type": "studio",
+   "tenant_name": "Mary Achieng",
+   "phone": "254733000004",
+   "email": null,
+   "national_id": "30000004",
+   "lease_start": "2026-11-04",
+   "rent_amount": "9500.00",
+   "total_paid": "0.00",
+   "outstanding_balance": "9500.00",
+   "deposit_amount": "9500.00",
+   "deposit_paid": true,
+   "vacated_at": "2026-11-04T13:05:59.897Z",
+   "purge_at": "2027-01-03T13:05:59.897Z",
+   "days_left": 60
+  }
+ ],
+ "logs": {
+  "items": [
+   {
+    "id": 21,
+    "category": "message",
+    "action": "message_failed",
+    "message": "overdue reminder message to Peter Otieno (house A2) via sms failed: SMS is not set up yet (AT_API_KEY is missing).",
+    "meta": {
+     "kind": "overdue reminder",
+     "notification_id": 3
+    },
+    "created_at": "2026-11-04T13:05:59.933Z",
+    "actor_name": null
+   },
+   {
+    "id": 20,
+    "category": "tenant",
+    "action": "tenant_vacated",
+    "message": "House B3 was vacated. Mary Achieng's details were archived until 03/01/2027. Unpaid rent of KES 9,500 was recorded in the archive.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.921Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 19,
+    "category": "tenant",
+    "action": "tenant_added",
+    "message": "Mary Achieng was added to house B3 (studio). Deposit KES 9,500 paid.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.892Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 18,
+    "category": "finance",
+    "action": "maintenance_spend_updated",
+    "message": "Maintenance spend for Sunrise Apartments in 2026-11 was set to KES 1,200.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.881Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 17,
+    "category": "message",
+    "action": "message_failed",
+    "message": "receipt message to Grace Wanjiru (house B1) via email failed: Email is not set up yet (SMTP_HOST is missing).",
+    "meta": {
+     "kind": "receipt",
+     "notification_id": 2
+    },
+    "created_at": "2026-11-04T13:05:59.879Z",
+    "actor_name": null
+   },
+   {
+    "id": 16,
+    "category": "payment",
+    "action": "payment_received",
+    "message": "Grace Wanjiru (house B1) paid KES 20,000 by bank transfer. Rent fully paid.",
+    "meta": {
+     "receipt": "RCP-2026-000002-065B2A",
+     "reference": "BANK-1",
+     "transaction_id": 2
+    },
+    "created_at": "2026-11-04T13:05:59.822Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 15,
+    "category": "message",
+    "action": "message_failed",
+    "message": "receipt message to Jane Mwangi (house A1) via sms failed: SMS is not set up yet (AT_API_KEY is missing).",
+    "meta": {
+     "kind": "receipt",
+     "notification_id": 1
+    },
+    "created_at": "2026-11-04T13:05:59.796Z",
+    "actor_name": null
+   },
+   {
+    "id": 14,
+    "category": "payment",
+    "action": "payment_received",
+    "message": "Jane Mwangi (house A1) paid KES 3,000 by cash. Balance KES 3,500.",
+    "meta": {
+     "receipt": "RCP-2026-000001-07C4CF",
+     "reference": null,
+     "transaction_id": 1
+    },
+    "created_at": "2026-11-04T13:05:59.778Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 13,
+    "category": "tenant",
+    "action": "tenant_added",
+    "message": "Grace Wanjiru was added to house B1 (2 bedroom). Deposit KES 20,000 paid.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.752Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 12,
+    "category": "tenant",
+    "action": "tenant_added",
+    "message": "Peter Otieno was added to house A2 (bedsitter). Deposit KES 8,000 pending.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.743Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 11,
+    "category": "tenant",
+    "action": "tenant_added",
+    "message": "Jane Mwangi was added to house A1 (single). Deposit KES 6,500 paid.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.730Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 10,
+    "category": "unit",
+    "action": "unit_added",
+    "message": "House J1 was added (1 bedroom, floor 0).",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.521Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 9,
+    "category": "unit",
+    "action": "unit_added",
+    "message": "House B3 was added (studio, floor 2).",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.453Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 8,
+    "category": "unit",
+    "action": "unit_added",
+    "message": "House B2 was added (2 bedroom, floor 3).",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.376Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 7,
+    "category": "unit",
+    "action": "unit_added",
+    "message": "House B1 was added (2 bedroom, floor 2).",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.345Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 6,
+    "category": "unit",
+    "action": "unit_added",
+    "message": "House A2 was added (bedsitter, floor 1).",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.296Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 5,
+    "category": "unit",
+    "action": "unit_added",
+    "message": "House A1 was added (single, floor 1).",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.257Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 4,
+    "category": "finance",
+    "action": "pricing_updated",
+    "message": "Prices for Sunrise Apartments were updated (5 prices).",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.100Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 3,
+    "category": "unit",
+    "action": "property_added",
+    "message": "Property \"Jade Court\" was added.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.029Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 2,
+    "category": "unit",
+    "action": "property_added",
+    "message": "Property \"Sunrise Apartments\" was added.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:59.001Z",
+    "actor_name": "Administrator"
+   },
+   {
+    "id": 1,
+    "category": "auth",
+    "action": "login",
+    "message": "Administrator signed in.",
+    "meta": null,
+    "created_at": "2026-11-04T13:05:58.917Z",
+    "actor_name": "Administrator"
+   }
+  ],
+  "next_before": null
+ },
+ "preview": {
+  "count": 3,
+  "sample": [
+   {
+    "name": "Grace Wanjiru",
+    "house": "B1"
+   },
+   {
+    "name": "Peter Otieno",
+    "house": "A2"
+   },
+   {
+    "name": "Jane Mwangi",
+    "house": "A1"
+   }
+  ],
+  "recipients": [
+   {
+    "id": "cbc28995-7b7a-4836-b103-6516fdeb93bc",
+    "name": "Grace Wanjiru",
+    "house": "B1",
+    "unit_type": "2_bedroom",
+    "rent_status": "paid",
+    "deposit_status": "held",
+    "deposit_amount": "20000.00"
+   },
+   {
+    "id": "ff15c666-358e-409e-a362-c76822c13429",
+    "name": "Peter Otieno",
+    "house": "A2",
+    "unit_type": "bedsitter",
+    "rent_status": "overdue",
+    "deposit_status": "pending",
+    "deposit_amount": "8000.00"
+   },
+   {
+    "id": "c77cf093-4b16-4efb-bb64-f7ea6c4432bb",
+    "name": "Jane Mwangi",
+    "house": "A1",
+    "unit_type": "single",
+    "rent_status": "partial",
+    "deposit_status": "held",
+    "deposit_amount": "6500.00"
+   }
+  ]
+ },
+ "qr": {
+  "url": "http://localhost:5173/p/sunrise-apartments",
+  "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"320\" height=\"320\" viewBox=\"0 0 33 33\" shape-rendering=\"crispEdges\"><path fill=\"#ffffff\" d=\"M0 0h33v33H0z\"/><path stroke=\"#000000\" d=\"M2 2.5h7m4 0h2m1 0h1m1 0h1m2 0h2m1 0h7M2 3.5h1m5 0h1m2 0h3m2 0h2m2 0h1m1 0h1m1 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m5 0h3m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m2 0h9m2 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h2m2 0h2m2 0h4m2 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m4 0h4m2 0h1m1 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h4m2 0h2m3 0h1M2 10.5h1m1 0h5m5 0h4m1 0h1m2 0h1m1 0h5M2 11.5h3m1 0h1m3 0h3m5 0h1m2 0h1m1 0h4m3 0h1M2 12.5h1m2 0h1m1 0h5m1 0h2m1 0h2m1 0h2m1 0h3m1 0h1M4 13.5h2m1 0h1m4 0h3m1 0h2m3 0h3m1 0h1m3 0h1M4 14.5h2m2 0h1m1 0h10m2 0h1m4 0h2M2 15.5h1m1 0h1m2 0h1m1 0h3m3 0h1m2 0h1m2 0h1m1 0h4m1 0h1m1 0h1M2 16.5h1m1 0h1m3 0h4m3 0h4m3 0h1m1 0h3m1 0h1M2 17.5h1m7 0h3m1 0h1m2 0h1m6 0h1m1 0h1m2 0h1M3 18.5h1m3 0h2m1 0h1m1 0h6m1 0h1m2 0h1m5 0h1M2 19.5h1m2 0h1m5 0h2m3 0h1m1 0h4m2 0h5m1 0h1M2 20.5h1m4 0h2m1 0h5m1 0h4m2 0h2m1 0h1m1 0h2M2 21.5h1m2 0h2m10 0h2m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1M2 22.5h1m1 0h1m1 0h3m1 0h2m1 0h4m2 0h1m2 0h5m1 0h3M10 23.5h1m1 0h2m2 0h1m4 0h2m3 0h5M2 24.5h7m2 0h1m3 0h1m1 0h6m1 0h1m1 0h3M2 25.5h1m5 0h1m1 0h1m1 0h1m3 0h3m1 0h1m1 0h1m3 0h2m1 0h2M2 26.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m2 0h5m1 0h3M2 27.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m3 0h3m1 0h1m4 0h4M2 28.5h1m1 0h3m1 0h1m1 0h1m4 0h4m1 0h1m1 0h1m1 0h3m2 0h1M2 29.5h1m5 0h1m2 0h1m1 0h1m7 0h2m2 0h1m1 0h1m1 0h1M2 30.5h7m1 0h1m3 0h1m1 0h4m3 0h1m1 0h1m2 0h1\"/></svg>\n"
+ },
+ "publicUnits": {
+  "property_name": "Sunrise Apartments",
+  "units": [
+   {
+    "id": "8c9e2405-db8a-49d4-bdd6-402a902e6687",
+    "unit_number": "A1"
+   },
+   {
+    "id": "9f49be4d-9127-4902-b8c1-33c15aec6ea5",
+    "unit_number": "A2"
+   },
+   {
+    "id": "e500e5a3-50de-42ca-9dea-8762fdd3f562",
+    "unit_number": "B1"
+   }
+  ]
+ },
+ "past": {
+  "date": "2026-11-01",
+  "is_today": false,
+  "earliest": "2026-10-21",
+  "today": "2026-11-04",
+  "month": "2026-11",
+  "collected": "0",
+  "maintenance_spent": "0",
+  "net_income": "0",
+  "pending": "0",
+  "overdue": "0",
+  "billed": "0",
+  "paid_count": 0,
+  "invoice_count": 0,
+  "total_units": 0,
+  "occupied_units": 0,
+  "vacant_units": 0,
+  "occupancy_pct": 0,
+  "by_type": [],
+  "revenue_trend": [
+   {
+    "month": "2026-06",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-07",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-08",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-09",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-10",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   },
+   {
+    "month": "2026-11",
+    "collected": "0",
+    "spent": "0",
+    "net": "0"
+   }
+  ],
+  "arrears_ageing": {
+   "d0_7": "0",
+   "d8_30": "0",
+   "d30_plus": "0"
+  },
+  "deposits": null,
+  "maintenance_properties": [
+   {
+    "id": "bc684c28-915a-4c0c-b921-6c3be80d5dc3",
+    "name": "Jade Court",
+    "amount": "0",
+    "note": null
+   },
+   {
+    "id": "31936338-5abc-445b-b7ba-eda3272251da",
+    "name": "Sunrise Apartments",
+    "amount": "1200.00",
+    "note": "Plumber"
+   }
+  ]
+ }
+}
