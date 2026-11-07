@@ -2,6 +2,7 @@ import './env.js';
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { config } from '../src/config.js';
+import { ensureDefaultAdmin, migrateDatabase } from '../src/db.js';
 import { createUser, login, pool, query, resetDb, startServer } from './helpers.js';
 import { mpesa } from '../src/services/mpesa.js';
 import { generateInvoices, markOverdue, reconcilePending, sendReminders } from '../src/services/billing.js';
@@ -75,6 +76,42 @@ before(async () => {
 after(async () => {
   await api.close();
   await pool.end();
+});
+
+describe('schema bootstrap', () => {
+  it('recreates the latest schema when older columns or tables are missing', async () => {
+    await query('ALTER TABLE invoices DROP COLUMN IF EXISTS voided_at');
+    await query('DROP TABLE IF EXISTS price_rules');
+
+    await migrateDatabase({ logger: { info: () => {}, warn: () => {}, error: () => {} } });
+
+    const invoiceColumn = await query(
+      `SELECT EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = 'public' AND table_name = 'invoices' AND column_name = 'voided_at'
+      ) AS present`
+    );
+    assert.equal(invoiceColumn.rows[0].present, true);
+
+    const pricingTable = await query(`SELECT to_regclass('public.price_rules') AS table_name`);
+    assert.ok(pricingTable.rows[0].table_name);
+  });
+
+  it('bootstraps the default admin account from environment credentials', async () => {
+    const admin = process.env.ADMIN_EMAIL || 'admin@manzili.property';
+    const password = process.env.ADMIN_PASSWORD || 'manzili254';
+
+    const row = await ensureDefaultAdmin({ logger: { info: () => {}, warn: () => {}, error: () => {} } });
+    const user = await query(
+      `SELECT email, role, is_active, password_hash FROM users WHERE lower(email) = lower($1)`,
+      [admin]
+    );
+
+    assert.equal(row.email, admin);
+    assert.equal(user.rows[0].role, 'admin');
+    assert.equal(user.rows[0].is_active, true);
+    assert.ok(await import('bcryptjs').then((m) => m.default.compare(password, user.rows[0].password_hash)));
+  });
 });
 
 describe('auth and friendly errors', () => {

@@ -1,14 +1,14 @@
-/* Palette: Ocean Water #CAE8E8, Cherry Velvet #C1121F, Singapore #E5DF94 (all flat, no gradients). */
+/* Palette: Teatime #BD9D7A, Rich Maroon #3c0302, Verdigris #6e6c37 */
 :root {
-  --ocean: #cae8e8;
-  --ocean-deep: #a9d2d2;
-  --teal: #1d6b68;
-  --ink: #0f2f2e;
-  --muted: #4d7270;
-  --cherry: #c1121f;
-  --cherry-dark: #9d0e19;
-  --singapore: #e5df94;
-  --singapore-dark: #cdc673;
+  --ocean: #f3ecdf;
+  --ocean-deep: #d8c8b5;
+  --teal: #6e6c37;
+  --ink: #3c0302;
+  --muted: #6b5647;
+  --cherry: #3c0302;
+  --cherry-dark: #260201;
+  --singapore: #BD9D7A;
+  --singapore-dark: #a88362;
 
   --sh-dark: rgba(0, 0, 0, 0);
   --sh-light: rgba(255, 255, 255, 0);

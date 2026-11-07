@@ -1,3 +1,6 @@
+import bcrypt from 'bcryptjs';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { config } from './config.js';
 
@@ -25,7 +28,45 @@ export const pool = new pg.Pool({
 // A dropped idle connection (common when Neon suspends) must not crash the process.
 pool.on('error', (err) => console.error('Idle database connection error:', err.message));
 
+const quoteIdent = (s) => `"${String(s).replace(/"/g, '""')}"`;
+
+export async function migrateDatabase({ logger = console } = {}) {
+  const sql = readFileSync(fileURLToPath(new URL('../sql/schema.sql', import.meta.url)), 'utf8');
+  await pool.query(sql);
+
+  try {
+    const { rows } = await pool.query('SELECT current_database() AS db');
+    await pool.query(`ALTER DATABASE ${quoteIdent(rows[0].db)} SET timezone TO '${config.tz.replace(/'/g, "''")}'`);
+  } catch (err) {
+    logger.warn?.(`Could not set the database time zone (${err.message}). The app still sets it per connection.`);
+  }
+
+  logger.info?.('Schema applied.');
+}
+
 export const query = (text, params) => pool.query(text, params);
+
+export async function ensureDefaultAdmin({ logger = console } = {}) {
+  const email = process.env.ADMIN_EMAIL || 'admin@manzili.property';
+  const password = process.env.ADMIN_PASSWORD || 'manzili254';
+  const hash = await bcrypt.hash(password, 12);
+
+  const { rows } = await pool.query(
+    `INSERT INTO users (email, password_hash, full_name, role)
+     VALUES ($1, $2, 'Administrator', 'admin')
+     ON CONFLICT (email) DO UPDATE SET
+       password_hash = EXCLUDED.password_hash,
+       full_name = EXCLUDED.full_name,
+       role = EXCLUDED.role,
+       is_active = TRUE,
+       updated_at = now()
+     RETURNING id, email`,
+    [email, hash]
+  );
+
+  logger.info?.(`Admin ready: ${email}`);
+  return rows[0];
+}
 
 /** Run fn(client) inside a transaction; commits on success, rolls back on error. */
 export async function withTx(fn) {

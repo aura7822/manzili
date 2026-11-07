@@ -1,5 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import AddPropertyModal from '../components/AddPropertyModal.vue';
 import AddUnitModal from '../components/AddUnitModal.vue';
 import DatePopover from '../components/DatePopover.vue';
@@ -12,6 +13,9 @@ import { HOUSE_TYPES, typeLabel } from '../houseTypes.js';
 import { live } from '../live.js';
 import { notify } from '../toast.js';
 
+const route = useRoute();
+const router = useRouter();
+
 const localDay = (d) => d.toLocaleDateString('en-CA');
 const todayLocal = localDay(new Date());
 const earliestLocal = localDay(new Date(Date.now() - 14 * 86400000));
@@ -21,7 +25,7 @@ const pricing = ref([]);
 const summary = ref(null);
 const feed = ref([]);
 const fresh = ref(new Set());
-const propertyId = ref('');
+const propertyId = ref(String(route.query.property_id ?? ''));
 const asOf = ref(null);
 const failed = ref(false);
 
@@ -111,6 +115,22 @@ onBeforeUnmount(() => { clearInterval(clock); clearInterval(ticker); });
 watch(() => live.tick, async () => {
   if (!booted.value || asOf.value) return;
   try { await Promise.all([fetchSummary(), fetchFeed()]); } catch { /* next refresh will retry */ }
+});
+
+watch(() => route.query.property_id, (value) => {
+  propertyId.value = String(value ?? '');
+}, { immediate: true });
+
+watch(propertyId, (value) => {
+  const query = { ...route.query };
+  if (value) {
+    if (query.property_id !== value) query.property_id = value;
+  } else {
+    delete query.property_id;
+  }
+  if (Object.keys(query).length !== Object.keys(route.query).length || Object.entries(query).some(([k, v]) => route.query[k] !== v)) {
+    router.replace({ query });
+  }
 });
 
 const selectProperty = (id) => { if (propertyId.value !== id) { propertyId.value = id; reload(); } };

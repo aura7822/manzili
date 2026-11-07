@@ -49,13 +49,73 @@ router.post('/properties', manage, async (req, res) => {
   res.status(201).json(rows[0]);
 });
 
+router.patch('/properties/:id', manage, async (req, res) => {
+  const params = [req.params.id];
+  const scope = propertyScope(req.user, params);
+  const exists = await query(`SELECT id FROM properties WHERE id = $1 AND ${scope}`, params);
+  if (!exists.rowCount) throw notFound('We could not find that property.');
+
+  const body = parse(
+    z.object({
+      name: z.string().trim().min(1).max(150).optional(),
+      address: z.string().trim().min(1).optional(),
+      city: z.string().trim().max(100).nullable().optional(),
+      total_floors: z.number().int().positive().nullable().optional(),
+    }).partial(),
+    req.body
+  );
+  if (Object.keys(body).length === 0) throw badRequest('Nothing to update');
+  if (body.name) body.slug = slugify(body.name);
+
+  const { text, params: p2 } = buildUpdate('properties', body, req.params.id);
+  const { rows } = await query(text, p2);
+  res.json(rows[0]);
+});
+
+router.delete('/properties/:id', manage, async (req, res) => {
+  const params = [req.params.id];
+  const scope = propertyScope(req.user, params);
+  const exists = await query(`SELECT p.id, p.name FROM properties p WHERE p.id = $1 AND ${scope}`, params);
+  if (!exists.rowCount) throw notFound('We could not find that property.');
+
+  const hasActiveLease = await query(
+    `SELECT 1 FROM units u
+      WHERE u.property_id = $1 AND EXISTS (SELECT 1 FROM leases l WHERE l.unit_id = u.id AND l.status = 'active')
+      LIMIT 1`,
+    [req.params.id]
+  );
+  if (hasActiveLease.rowCount) throw badRequest('This property still has occupied houses. Vacate them before deleting the property.');
+
+  const hasLeaseHistory = await query(
+    `SELECT 1 FROM leases l JOIN units u ON u.id = l.unit_id WHERE u.property_id = $1 LIMIT 1`,
+    [req.params.id]
+  );
+  if (hasLeaseHistory.rowCount) throw badRequest('This property has lease history. Please clear its tenant records before deleting it.');
+
+  const { rows } = await query(`DELETE FROM properties WHERE id = $1 AND ${scope} RETURNING *`, params);
+  res.json({ deleted: true, id: rows[0].id, name: rows[0].name });
+});
+
 router.get('/properties/:id/qr', async (req, res) => {
+  const q = parse(
+    z.object({
+      unit_type: z.enum(HOUSE_TYPES).optional(),
+      floor_number: z.coerce.number().int().min(-5).max(150).optional(),
+      amount: z.coerce.number().int().min(1).max(1000000).optional(),
+    }).partial(),
+    req.query
+  );
   const params = [req.params.id];
   const scope = propertyScope(req.user, params);
   const { rows } = await query(`SELECT p.slug FROM properties p WHERE p.id = $1 AND ${scope}`, params);
   if (!rows[0]) throw notFound('We could not find that property.');
 
-  const url = `${config.publicUrl}/p/${rows[0].slug}`;
+  const search = new URLSearchParams();
+  if (q.unit_type) search.set('unit_type', q.unit_type);
+  if (q.floor_number !== undefined) search.set('floor', String(q.floor_number));
+  if (q.amount !== undefined) search.set('amount', String(q.amount));
+
+  const url = `${config.publicUrl}/p/${rows[0].slug}${search.size ? `?${search.toString()}` : ''}`;
   const svg = await QRCode.toString(url, { type: 'svg', margin: 2, width: 320 });
   res.json({ url, svg });
 });
@@ -134,6 +194,16 @@ router.patch('/units/:id', manage, async (req, res) => {
   const { text, params } = buildUpdate('units', b, req.params.id);
   const { rows } = await query(text, params);
   res.json(rows[0]);
+});
+
+router.delete('/units/:id', manage, async (req, res) => {
+  await assertUnitAccess(req.user, req.params.id);
+
+  const hasLease = await query(`SELECT 1 FROM leases WHERE unit_id = $1 LIMIT 1`, [req.params.id]);
+  if (hasLease.rowCount) throw badRequest('This house has lease history and cannot be deleted. Vacate or remove the tenant record before deleting it.');
+
+  const { rows } = await query(`DELETE FROM units WHERE id = $1 RETURNING *`, [req.params.id]);
+  res.json({ deleted: true, id: rows[0].id, unit_number: rows[0].unit_number });
 });
 
 /** Mark a house vacant, archive the tenant for 60 days and erase their details. */

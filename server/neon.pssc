@@ -1,0 +1,48 @@
+# Requires Administrator privileges for PostgreSQL installation/service start
+$ErrorActionPreference = "Stop"
+
+Write-Host "=== 1. Checking Local PostgreSQL Service ===" -ForegroundColor Cyan
+
+function Check-Postgres {
+    $psql = Get-Command psql -ErrorAction SilentlyContinue
+    if (-not $psql) {
+        Write-Host "PostgreSQL is not installed or not in PATH." -ForegroundColor Yellow
+        if (Get-Command winget -ErrorAction SilentlyContinue) {
+            Write-Host "Installing PostgreSQL via winget..." -ForegroundColor Yellow
+            winget install PostgreSQL.PostgreSQL --silent --accept-package-agreements --accept-source-agreements
+            $env:Path += ";C:\Program Files\PostgreSQL\16\bin"
+        } else {
+            Write-Host "winget not found. Please install PostgreSQL manually from postgresql.org" -ForegroundColor Red
+            exit 1
+        }
+    } else {
+        Write-Host "PostgreSQL binary detected." -ForegroundColor Green
+    }
+
+    $service = Get-Service -Name "postgresql*" -ErrorAction SilentlyContinue
+    if ($service) {
+        if ($service.Status -ne 'Running') {
+            Write-Host "Starting PostgreSQL service..." -ForegroundColor Yellow
+            Start-Service $service.Name
+        } else {
+            Write-Host "PostgreSQL service is running." -ForegroundColor Green
+        }
+    }
+}
+
+Check-Postgres
+
+Write-Host "`n=== 2. Running Neon Init & Link ===" -ForegroundColor Cyan
+npx neon@latest init -y `
+  --org-id org-lucky-darkness-43020680 `
+  --project-id cold-hall-89784657 `
+  --branch production `
+  --services postgres
+
+Write-Host "`n=== 3. Deploying Policy to Neon ===" -ForegroundColor Cyan
+npx neon@latest deploy
+
+Write-Host "`n=== 4. Running Database Migrations ===" -ForegroundColor Cyan
+pnpm run migrate
+
+Write-Host "`n✅ Neon deployment and database migration complete!" -ForegroundColor Green

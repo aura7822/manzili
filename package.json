@@ -14,5 +14,9 @@
     "test": "npm --prefix server test && npm --prefix web test",
     "test:server": "npm --prefix server test",
     "test:web": "npm --prefix web test"
+  },
+  "dependencies": {
+    "@neon/config": "^1.12.1",
+    "@neon/env": "^2.0.1"
   }
 }

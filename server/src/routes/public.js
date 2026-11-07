@@ -40,7 +40,7 @@ const safeEqual = (a, b) => {
 /** Units that currently have an active lease (numbers only, no tenant data). */
 router.get('/properties/:slug/units', async (req, res) => {
   const { rows } = await query(
-    `SELECT p.name AS property_name, u.id, u.unit_number
+    `SELECT p.name AS property_name, u.id, u.unit_number, u.unit_type, u.floor_number
        FROM properties p
        JOIN units u ON u.property_id = p.id
       WHERE p.slug = $1
@@ -53,7 +53,7 @@ router.get('/properties/:slug/units', async (req, res) => {
     if (!prop.rows[0]) throw notFound('Property not found');
     return res.json({ property_name: prop.rows[0].name, units: [] });
   }
-  res.json({ property_name: rows[0].property_name, units: rows.map((r) => ({ id: r.id, unit_number: r.unit_number })) });
+  res.json({ property_name: rows[0].property_name, units: rows.map((r) => ({ id: r.id, unit_number: r.unit_number, unit_type: r.unit_type, floor_number: r.floor_number })) });
 });
 
 /** Verify unit + registered phone. Same error for every failure so nothing leaks. */

@@ -1,24 +1,13 @@
-import bcrypt from 'bcryptjs';
 import { config } from '../src/config.js';
-import { pool, query } from '../src/db.js';
+import { ensureDefaultAdmin, pool, query } from '../src/db.js';
 import { generateInvoices } from '../src/services/billing.js';
 
 const demo = process.argv.includes('--demo');
 
 try {
-  const email = process.env.ADMIN_EMAIL || 'admin@example.com';
-  const password = process.env.ADMIN_PASSWORD || 'ChangeMe123!';
-
-  const hash = await bcrypt.hash(password, 12);
-  const { rows } = await query(
-    `INSERT INTO users (email, password_hash, full_name, role)
-     VALUES ($1, $2, 'Administrator', 'admin')
-     ON CONFLICT (email) DO UPDATE SET email = EXCLUDED.email
-     RETURNING id`,
-    [email, hash]
-  );
-  const adminId = rows[0].id;
-  console.log(`Admin ready: ${email}`);
+  const admin = await ensureDefaultAdmin();
+  const adminId = admin.id;
+  console.log(`Admin ready: ${process.env.ADMIN_EMAIL || 'admin@manzili.property'}`);
 
   if (demo) {
     const prop = await query(

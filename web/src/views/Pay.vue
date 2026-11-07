@@ -1,10 +1,14 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Icon from '../components/Icon.vue';
 import { api, fmtDate, kes } from '../api.js';
 
-const slug = useRoute().params.slug;
+const route = useRoute();
+const slug = route.params.slug;
+const selectedType = ref(route.query.unit_type || '');
+const selectedFloor = ref(route.query.floor || route.query.floor_number || '');
+const defaultAmount = ref(route.query.amount ? Number(route.query.amount) : 0);
 
 const step = ref('loading'); // loading | unit | verify | invoice | waiting | done | none | error
 const error = ref('');
@@ -20,6 +24,15 @@ const mpesaPhone = ref('');
 const result = ref(null);
 const busy = ref(false);
 
+const filteredUnits = computed(() => {
+  if (!selectedType.value && !selectedFloor.value) return units.value;
+  return units.value.filter((u) => {
+    const matchesType = !selectedType.value || u.unit_type === selectedType.value;
+    const matchesFloor = selectedFloor.value === '' || Number(u.floor_number) === Number(selectedFloor.value);
+    return matchesType && matchesFloor;
+  });
+});
+
 let pollTimer = null;
 let pollUntil = 0;
 
@@ -28,11 +41,20 @@ onMounted(async () => {
     const data = await api(`/public/properties/${encodeURIComponent(slug)}/units`);
     propertyName.value = data.property_name;
     units.value = data.units;
-    step.value = 'unit';
+    if (filteredUnits.value.length === 1) {
+      unitId.value = filteredUnits.value[0].id;
+      step.value = 'verify';
+    } else {
+      step.value = 'unit';
+    }
   } catch (e) {
     error.value = e.message;
     step.value = 'error';
   }
+});
+
+watch(filteredUnits, (rows) => {
+  if (rows.length === 1 && !unitId.value) unitId.value = rows[0].id;
 });
 onBeforeUnmount(() => clearTimeout(pollTimer));
 
@@ -60,7 +82,9 @@ async function loadInvoice() {
   const { invoice: inv } = await api('/public/invoice', { payToken: token.value });
   invoice.value = inv;
   if (!inv) { step.value = 'none'; return; }
-  amount.value = String(Math.ceil(Number(inv.balance)));
+  const fallback = Math.ceil(Number(inv.balance));
+  const preferred = defaultAmount.value > 0 && defaultAmount.value <= fallback ? defaultAmount.value : fallback;
+  amount.value = String(preferred);
   step.value = 'invoice';
 }
 

@@ -1,13 +1,16 @@
 import { createApp } from './app.js';
 import { assertConfig, config } from './config.js';
-import { pool } from './db.js';
+import { ensureDefaultAdmin, migrateDatabase, pool } from './db.js';
 import { startJobs } from './jobs.js';
 
 assertConfig();
+await migrateDatabase();
+await ensureDefaultAdmin();
 
 const app = createApp();
-const server = app.listen(config.port, () => {
-  console.log(`Rent Manager API listening on http://localhost:${config.port}`);
+const PORT = process.env.PORT || 3000;
+const server = app.listen(PORT, () => {
+  console.log(`Rent Manager API listening on http://localhost:${PORT}`);
   if (!config.disableJobs) startJobs();
 });
 

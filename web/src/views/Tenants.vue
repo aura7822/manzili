@@ -19,14 +19,35 @@ const tenants = ref([]);
 const loading = ref(true);
 const q = ref('');
 const status = ref('');
+const propertyFilter = ref(String(route.query.property_id ?? ''));
+
+watch(() => route.query.property_id, (value) => {
+  propertyFilter.value = String(value ?? '');
+}, { immediate: true });
+
+watch(propertyFilter, (value) => {
+  const query = { ...route.query };
+  if (value) {
+    if (query.property_id !== value) query.property_id = value;
+  } else {
+    delete query.property_id;
+  }
+  if (Object.keys(query).length !== Object.keys(route.query).length || Object.entries(query).some(([k, v]) => route.query[k] !== v)) {
+    router.replace({ query });
+  }
+});
 
 async function load({ silent = true } = {}) {
   if (!silent) loading.value = true;
   const qs = new URLSearchParams();
   if (q.value) qs.set('q', q.value);
   if (status.value) qs.set('status', status.value);
+  if (propertyFilter.value) qs.set('property_id', propertyFilter.value);
   try {
-    tenants.value = await api(`/tenants?${qs}`);
+    [tenants.value, properties.value] = await Promise.all([
+      api(`/tenants?${qs}`),
+      api('/properties'),
+    ]);
   } catch (e) {
     notify.error(e.message);
   } finally {
@@ -35,7 +56,7 @@ async function load({ silent = true } = {}) {
 }
 
 let timer;
-watch([q, status], () => { clearTimeout(timer); timer = setTimeout(() => load(), 250); });
+watch([q, status, propertyFilter], () => { clearTimeout(timer); timer = setTimeout(() => load(), 250); });
 watch(() => live.tick, () => load());
 
 onMounted(async () => {
@@ -216,6 +237,10 @@ async function saveEdit() {
 
   <div class="toolbar">
     <div class="search"><Icon name="search" :size="16" /><input v-model="q" placeholder="Search name, phone, ID or house" /></div>
+    <select v-model="propertyFilter" aria-label="Property">
+      <option value="">All properties</option>
+      <option v-for="p in properties" :key="p.id" :value="p.id">{{ p.name }}</option>
+    </select>
     <select v-model="status" aria-label="Rent status">
       <option value="">All rent statuses</option>
       <option value="paid">Paid</option>
@@ -230,11 +255,12 @@ async function saveEdit() {
     <Skeleton v-if="loading" :rows="6" :cols="6" />
     <div v-else class="table-wrap">
       <table class="stack">
-        <thead><tr><th>Tenant</th><th>House</th><th>Rent status</th><th>Deposit</th><th>Date added</th><th v-if="canManage()" /></tr></thead>
+        <thead><tr><th>Tenant</th><th>Property</th><th>House</th><th>Rent status</th><th>Deposit</th><th>Date added</th><th v-if="canManage()" /></tr></thead>
         <tbody>
           <tr v-for="t in tenants" :key="t.id">
             <td data-label="Tenant"><strong>{{ t.full_name }}</strong><small>{{ t.phone }}</small></td>
-            <td data-label="House"><strong>{{ t.unit_number }}</strong><small>{{ t.property_name }}<template v-if="t.unit_type"> &middot; {{ t.unit_type.replace('_', ' ') }}</template></small></td>
+            <td data-label="Property"><strong>{{ t.property_name }}</strong></td>
+            <td data-label="House"><strong>{{ t.unit_number }}</strong><small><template v-if="t.unit_type">{{ t.unit_type.replace('_', ' ') }}</template></small></td>
             <td data-label="Rent status">
               <Pill :status="t.rent_status" />
               <small v-if="canRemind(t)">Balance {{ kes(t.balance) }} &middot; due {{ fmtDate(t.due_date) }}</small>
@@ -254,7 +280,7 @@ async function saveEdit() {
             </td>
           </tr>
           <tr v-if="!tenants.length">
-            <td :colspan="canManage() ? 6 : 5" class="empty cell-empty">
+            <td :colspan="canManage() ? 7 : 6" class="empty cell-empty">
               <template v-if="q || status"><strong>No tenants match</strong>Try clearing the search or filter.</template>
               <template v-else><strong>No tenants yet</strong>Add your first tenant to start tracking rent.</template>
             </td>
