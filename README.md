@@ -1,4 +1,14 @@
-# My Property Management System (Node.js)
+### RELEASE NOTES 
+
+Release Version: v3.3.0
+
+Release Date: November 7, 2026
+
+Target Environment: Node.js 20+ | PostgreSQL 14+ / Neon DB
+
+
+
+#  PROPERTY MANAGEMENT :Manzili Mkononi (Node.js)
 
 Landlord Control Panel + tenant QR payment page, in pure JavaScript.
 
