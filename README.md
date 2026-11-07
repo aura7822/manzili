@@ -8,7 +8,7 @@ Target Environment: Node.js 20+ | PostgreSQL 14+ / Neon DB
 
 
 
-#  PROPERTY MANAGEMENT :Manzili Mkononi (Node.js)
+#  PROPERTY MANAGEMENT : Manzili Mkononi (Node.js)
 
 Landlord Control Panel + tenant QR payment page, in pure JavaScript.
 
