@@ -2,7 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createMemoryHistory, createRouter } from 'vue-router';
 import fixtures from './fixtures.json';
-import { setSession } from '../src/api.js';
+import { setSession, session } from '../src/api.js';
 import { QUOTES } from '../src/quotes.js';
 import { toasts } from '../src/toast.js';
 import Archives from '../src/views/Archives.vue';
@@ -520,6 +520,28 @@ describe('Sign in and tenant payment page', () => {
     await button(wrapper, 'Sign in').trigger('click');
     await flushPromises();
     expect(text(wrapper)).toContain('not right');
+  });
+
+  it('lets a landlord create an account from the sign-in page', async () => {
+    setSession(null, null);
+    overrides['POST /api/auth/register'] = () => ({ status: 201, data: { token: 'new-token', user: { id: 'u2', email: 'owner@example.com', full_name: 'New Owner', role: 'landlord' } } });
+    const { wrapper } = await render(Login);
+    await wrapper.find('button[aria-label="Create landlord account"]').trigger('click');
+    await flushPromises();
+    expect(bodyText()).toContain('Create landlord account');
+    const inputs = document.body.querySelectorAll('.modal input');
+    setValue(inputs[0], 'New Owner');
+    setValue(inputs[1], 'owner@example.com');
+    setValue(inputs[2], 'securepass123');
+    bodyButton('Create account').click();
+    await flushPromises();
+    expect(calls.find((c) => c.method === 'POST' && c.url.endsWith('/auth/register'))).toMatchObject({
+      method: 'POST',
+      url: expect.stringMatching(/\/auth\/register$/),
+      body: { full_name: 'New Owner', email: 'owner@example.com', password: 'securepass123' },
+    });
+    expect(session.user.full_name).toBe('New Owner');
+    expect(session.token).toBe('new-token');
   });
 
   it('walks a tenant from QR scan to a paid receipt', async () => {

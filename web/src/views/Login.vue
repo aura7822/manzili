@@ -16,6 +16,12 @@ const showPassword = ref(false);
 const error = ref(expired ? 'Your session ended. Please sign in again.' : '');
 const busy = ref(false);
 const showPrivacy = ref(false);
+const showRegister = ref(false);
+const registerName = ref('');
+const registerEmail = ref('');
+const registerPassword = ref('');
+const registerError = ref('');
+const registerBusy = ref(false);
 const countdown = ref(15);
 const policyRead = ref(false);
 let countdownTimer = null;
@@ -44,6 +50,47 @@ function acceptPrivacyPolicy() {
   showPrivacy.value = false;
   clearInterval(countdownTimer);
   countdown.value = 0;
+}
+
+function openRegister() {
+  showRegister.value = true;
+  registerError.value = '';
+}
+
+function closeRegister() {
+  showRegister.value = false;
+  registerError.value = '';
+  registerName.value = '';
+  registerEmail.value = '';
+  registerPassword.value = '';
+}
+
+async function submitRegister() {
+  const fullName = registerName.value.trim();
+  const emailAddress = registerEmail.value.trim();
+  const newPassword = registerPassword.value;
+
+  if (!fullName || !emailAddress || !newPassword) {
+    registerError.value = 'Please fill in your name, email and password.';
+    return;
+  }
+  if (newPassword.length < 8) {
+    registerError.value = 'Choose a password with at least 8 characters.';
+    return;
+  }
+
+  registerBusy.value = true;
+  registerError.value = '';
+  try {
+    const { token, user } = await api('/auth/register', { method: 'POST', body: { full_name: fullName, email: emailAddress, password: newPassword } });
+    setSession(token, user);
+    closeRegister();
+    router.push('/');
+  } catch (e) {
+    registerError.value = e.message;
+  } finally {
+    registerBusy.value = false;
+  }
 }
 
 onMounted(() => {
@@ -105,12 +152,37 @@ async function submit() {
         </span>
       </label>
 
-      <button type="button" class="btn sm" style="margin-bottom: 12px; width: 100%" @click="openPrivacyPolicy">Privacy policy</button>
+      <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <button type="button" class="btn sm" style="flex: 1" @click="openPrivacyPolicy">Privacy policy</button>
+        <button type="button" class="btn sm" style="flex: none; width: 42px;" aria-label="Create landlord account" title="Create landlord account" @click="openRegister">+</button>
+      </div>
       <button class="btn primary block" :class="{ busy }" :disabled="!canSignIn" @click="submit">
         {{ countdown > 0 ? `Wait ${countdown}s` : 'Sign in' }}
       </button>
     </div>
   </div>
+
+  <Modal v-if="showRegister" title="Create landlord account" @close="closeRegister">
+    <div class="modal-copy">
+      <p>Create a separate landlord account to keep your property portfolio and tenant records private.</p>
+      <label class="field">Full name
+        <input v-model="registerName" type="text" autocomplete="name" placeholder="Your full name" @keyup.enter="submitRegister" />
+      </label>
+      <label class="field">Email
+        <input v-model="registerEmail" type="email" autocomplete="email" placeholder="you@example.com" @keyup.enter="submitRegister" />
+      </label>
+      <label class="field">Password
+        <input v-model="registerPassword" type="password" autocomplete="new-password" placeholder="At least 8 characters" @keyup.enter="submitRegister" />
+      </label>
+      <p v-if="registerError" class="banner error" role="alert">{{ registerError }}</p>
+    </div>
+    <footer>
+      <button class="btn" @click="closeRegister">Cancel</button>
+      <button class="btn primary" :disabled="registerBusy" @click="submitRegister">
+        {{ registerBusy ? 'Creating...' : 'Create account' }}
+      </button>
+    </footer>
+  </Modal>
 
   <Modal v-if="showPrivacy" title="Privacy Policy" @close="showPrivacy = false">
     <div class="modal-copy">

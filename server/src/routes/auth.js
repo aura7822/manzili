@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { query } from '../db.js';
 import { requireAuth, signStaffToken } from '../middleware/auth.js';
 import { logActivity } from '../services/activity.js';
-import { unauthorized } from '../util/errors.js';
+import { conflict, unauthorized } from '../util/errors.js';
 import { parse } from '../util/validate.js';
 
 const router = Router();
@@ -20,6 +20,37 @@ const loginLimiter = rateLimit({
 
 // Used to keep response time similar when the email does not exist.
 const DUMMY_HASH = bcrypt.hashSync('not-a-real-password', 10);
+
+router.post('/register', loginLimiter, async (req, res) => {
+  const { full_name, email, password } = parse(
+    z.object({
+      full_name: z.string().trim().min(2).max(150),
+      email: z.string().trim().email(),
+      password: z.string().min(8).max(128),
+    }),
+    req.body
+  );
+
+  const { rows: existingRows } = await query('SELECT id FROM users WHERE lower(email) = lower($1)', [email]);
+  if (existingRows[0]) {
+    throw conflict('An account with that email already exists.');
+  }
+
+  const passwordHash = await bcrypt.hash(password, 12);
+  const { rows } = await query(
+    `INSERT INTO users (email, password_hash, full_name, role)
+     VALUES ($1, $2, $3, 'landlord')
+     RETURNING id, email, full_name, role`,
+    [email, passwordHash, full_name]
+  );
+
+  const user = rows[0];
+  await logActivity({ category: 'auth', action: 'account_created', message: `${user.full_name} created a landlord account.`, actorId: user.id });
+  res.status(201).json({
+    token: signStaffToken(user),
+    user: { id: user.id, email: user.email, full_name: user.full_name, role: user.role },
+  });
+});
 
 router.post('/login', loginLimiter, async (req, res) => {
   const { email, password } = parse(z.object({ email: z.string().email(), password: z.string().min(1) }), req.body);

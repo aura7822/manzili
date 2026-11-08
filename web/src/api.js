@@ -7,9 +7,19 @@ const apiUrl = (path) => {
   return API_BASE ? `${API_BASE}${normalized}` : `/api${normalized}`;
 };
 
-function load() {
+function storage() {
   try {
-    return JSON.parse(localStorage.getItem(KEY)) || { token: null, user: null };
+    return typeof window !== 'undefined' && window.localStorage ? window.localStorage : null;
+  } catch {
+    return null;
+  }
+}
+
+function load() {
+  const store = storage();
+  if (!store) return { token: null, user: null };
+  try {
+    return JSON.parse(store.getItem(KEY)) || { token: null, user: null };
   } catch {
     return { token: null, user: null };
   }
@@ -20,8 +30,10 @@ export const session = reactive(load());
 export function setSession(token, user) {
   session.token = token;
   session.user = user;
-  if (token) localStorage.setItem(KEY, JSON.stringify({ token, user }));
-  else localStorage.removeItem(KEY);
+  const store = storage();
+  if (!store) return;
+  if (token) store.setItem(KEY, JSON.stringify({ token, user }));
+  else store.removeItem(KEY);
 }
 
 export function logout(expired = false) {
