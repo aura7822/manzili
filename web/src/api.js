@@ -1,6 +1,11 @@
 import { reactive } from 'vue';
 
 const KEY = 'rent_session';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+const apiUrl = (path) => {
+  const normalized = path.startsWith('/') ? path : `/${path}`;
+  return API_BASE ? `${API_BASE}${normalized}` : `/api${normalized}`;
+};
 
 function load() {
   try {
@@ -53,7 +58,7 @@ export async function api(path, { method = 'GET', body, payToken } = {}) {
 
   let res;
   try {
-    res = await fetch(`/api${path}`, { method, headers, body: body !== undefined ? JSON.stringify(body) : undefined });
+    res = await fetch(apiUrl(path), { method, headers, body: body !== undefined ? JSON.stringify(body) : undefined });
   } catch {
     throw new ApiError(OFFLINE);
   }
