@@ -23,8 +23,30 @@ export function createApp() {
   app.set('trust proxy', 1);
   app.disable('x-powered-by');
 
+  const allowedOrigins = (config.corsOrigin || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  const isAllowedOrigin = (origin) => {
+    if (!origin) return true;
+    if (allowedOrigins.includes(origin)) return true;
+    return /(^|\.)localhost(:\d+)?$/.test(origin)
+      || /(^|\.)onrender\.com$/.test(origin)
+      || /(^|\.)netlify\.app$/.test(origin)
+      || /(^|\.)vercel\.app$/.test(origin);
+  };
+
   app.use(helmet({ contentSecurityPolicy: false }));
-  app.use(cors({ origin: config.corsOrigin.split(','), allowedHeaders: ['Content-Type', 'Authorization', 'X-Pay-Token'] }));
+  app.use(cors({
+    origin(origin, callback) {
+      if (isAllowedOrigin(origin)) return callback(null, true);
+      callback(new Error(`Origin ${origin} is not allowed by CORS`));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Pay-Token'],
+  }));
   app.use(express.json({ limit: '100kb' }));
 
   app.get('/api/health', (_req, res) => res.json({ ok: true }));

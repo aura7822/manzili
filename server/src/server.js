@@ -3,22 +3,35 @@ import { assertConfig, config } from './config.js';
 import { ensureDefaultAdmin, migrateDatabase, pool } from './db.js';
 import { startJobs } from './jobs.js';
 
-assertConfig();
-await migrateDatabase();
-await ensureDefaultAdmin();
+async function bootstrap() {
+  assertConfig();
+  await migrateDatabase();
+  await ensureDefaultAdmin();
 
-const app = createApp();
-const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () => {
-  console.log(`Rent Manager API listening on http://localhost:${PORT}`);
-  if (!config.disableJobs) startJobs();
-});
+  if (!config.disableJobs) {
+    startJobs();
+  }
 
-const shutdown = () => {
-  server.close(async () => {
-    await pool.end();
-    process.exit(0);
+  const app = createApp();
+  const port = config.port;
+
+  const server = app.listen(port, () => {
+    console.log(`Rent Manager API listening on http://localhost:${port}`);
   });
-};
-process.on('SIGINT', shutdown);
-process.on('SIGTERM', shutdown);
+
+  const shutdown = async (signal) => {
+    console.log(`Received ${signal}, shutting down...`);
+    server.close(async () => {
+      await pool.end();
+      process.exit(0);
+    });
+  };
+
+  process.on('SIGINT', () => shutdown('SIGINT'));
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+}
+
+bootstrap().catch((error) => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
+});
