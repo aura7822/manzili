@@ -4,7 +4,10 @@ const KEY = 'rent_session';
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
 const apiUrl = (path) => {
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  return API_BASE ? `${API_BASE}${normalized}` : `/api${normalized}`;
+  const requestPath = normalized.startsWith('/api') ? normalized : `/api${normalized}`;
+  if (!API_BASE) return requestPath;
+  const base = API_BASE.replace(/\/api$/, '');
+  return `${base}${requestPath}`;
 };
 
 function storage() {

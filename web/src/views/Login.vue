@@ -119,7 +119,7 @@ async function submit() {
   error.value = '';
   busy.value = true;
   try {
-    const { token, user } = await api('/api/auth/login', { method: 'POST', body: { email: email.value, password: password.value } });
+    const { token, user } = await api('/auth/login', { method: 'POST', body: { email: email.value, password: password.value } });
     setSession(token, user);
     router.push('/');
   } catch (e) {
